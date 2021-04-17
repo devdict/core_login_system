@@ -1,5 +1,9 @@
+<?php include "connection.php"; ?>
 <?php
-include ('connection.php');
+if($_SESSION['login'] == true){
+    header('location:dashboard.php');
+}
+
 if(isset($_POST['submit']) AND $_POST['submit'] == 'register'){
     $name = $_POST['name'];
     $email = $_POST['email'];
@@ -11,42 +15,62 @@ if(isset($_POST['submit']) AND $_POST['submit'] == 'register'){
     //Name validation
     if($name == ''){
         $name_error = 'Name field is required';
+        $submitable = false;
     }elseif(strlen($name) < 3){
         $name_error = 'Name should be greater than three chracters';
+        $submitable = false;
     }
+
 
     //E-mail validation
     $email_check = $connection->query("SELECT * FROM users WHERE email = '$email'");
 //    print_r($email_check);
     if($email == ''){
         $email_error = 'E-mail field is required';
+        $submitable = false;
     }elseif(!filter_var($email,FILTER_VALIDATE_EMAIL)){
         $email_error = 'Invalid email';
+        $submitable = false;
     }elseif($email_check->num_rows > 0){
         $email_error = 'E-mail already exists';
+        $submitable = false;
     }
 
     //password validation
 
     if($password == ''){
         $password_error = 'Password field is required';
+        $submitable = false;
     }elseif(strlen($password) < 6){
         $password_error = 'Password must be greater than six character';
+        $submitable = false;
     }elseif($password != $confirm_password){
         $confirm_password_error = 'Password does not matched';
+        $submitable = false;
     }
 
 
-    if($submitable){
+    if($submitable == true){
 
         $encryp_pass = md5($password);
 
         $sql = "INSERT INTO users (name,email,password) values ('$name','$email','$encryp_pass')";
 
         $connection->query($sql);
+
+        $name = $email = $password = $confirm_password = '';
+
+        $_SESSION['msg'] = 'new user successfully registered';
+
+        $_SESSION['msg_color'] = 'success';
+
+
+        $_SESSION['login'] = true;
+
+        header('location: dashboard.php');
+
     }
 
-    $name = $email = $password = $confirm_password = '';
 }
 
 ?>

@@ -1,4 +1,11 @@
+<?php include "connection.php"; ?>
+
 <?php include ('components/header.php')?>
+<?php
+if($_SESSION['login'] == false){
+    header('location:login.php');
+}
+?>
 <div class="col-md-6 m-auto pt-5">
     <div class="card">
         <div class="card-header">

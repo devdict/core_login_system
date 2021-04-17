@@ -1,5 +1,11 @@
-<?php include ('components/header.php')?>
+<?php include "connection.php"; ?>
 
+<?php include ('components/header.php')?>
+<?php
+if($_SESSION['login'] == true){
+    header('location:dashboard.php');
+}
+?>
 <div class="col-md-6 m-auto pt-5">
     <div class="card">
         <div class="card-header">
