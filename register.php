@@ -1,7 +1,10 @@
 <?php include "connection.php"; ?>
 <?php
-if($_SESSION['login'] == true){
-    header('location:dashboard.php');
+//if(isset($_SESSION['login']) == true){
+//    header('location:dashboard.php');
+//}
+if(isset($_SESSION['login']) == true){
+    return header('location:dashboard.php');
 }
 
 if(isset($_POST['submit']) AND $_POST['submit'] == 'register'){
@@ -67,14 +70,17 @@ if(isset($_POST['submit']) AND $_POST['submit'] == 'register'){
 
         $_SESSION['login'] = true;
 
-        header('location: dashboard.php');
+        return header('location: dashboard.php');
 
     }
+
+
 
 }
 
 ?>
 <?php include('components/header.php') ?>
+
 <div class="col-md-6 m-auto pt-5">
     <div class="card">
         <div class="card-header">
