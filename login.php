@@ -17,6 +17,7 @@ if(isset($_POST['submit']) && $_POST['submit'] == 'login'){
     $data = $connection->query($sql);
 
    if($data->num_rows > 0){
+       $_SESSION['login_user'] = $data->fetch_assoc()['id'];
        $_SESSION['login'] = true;
        return header('location: dashboard.php');
    }

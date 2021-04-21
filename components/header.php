@@ -12,6 +12,13 @@
     <title>Hello, world!</title>
 </head>
 <body>
+<?php
+if(isset($_SESSION['login'])){
+    $user_id = $_SESSION['login_user'];
+    $user_query = "SELECT * FROM users WHERE id = '$user_id'";
+    $user_data = $connection->query($user_query)->fetch_assoc();
+}
+?>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
 
@@ -30,6 +37,9 @@
                         <a class="nav-link" href="register.php">Register</a>
                     </li>
                 <?php }else{ ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="profile.php">Profile</a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="logout.php">Logout</a>
                     </li>

@@ -5,6 +5,33 @@
 if(isset($_SESSION['login']) == false){
     return header('location: login.php');
 }
+
+if(isset($_POST['update']) && $_POST['update'] == 'update'){
+    $user_id = $_SESSION['login_user'];
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+
+//    $avatar_name = $_FILES['avatar']['name'];
+//    $avatar_size = $_FILES['avatar']['size'];
+//    $avatar_tmp = $_FILES['avatar']['tmp_name'];
+
+    $avatar = $_FILES['avatar'];
+
+    $avatar_name = $avatar['name'];
+    $avatar_size = $avatar['size'];
+    $avatar_tmp = $avatar['tmp_name'];
+
+    move_uploaded_file($avatar_tmp,"storage/".$avatar_name);
+
+    unlink('storage/'.$user_data['avatar']);
+
+    $user_update_sql = "UPDATE users SET name = '$name', email = '$email', avatar = '$avatar_name' WHERE id = '$user_id'";
+
+    $connection->query($user_update_sql);
+
+    return header('location: profile.php');
+}
+
 ?>
 <div class="col-md-6 m-auto pt-5">
     <div class="card">
@@ -12,9 +39,20 @@ if(isset($_SESSION['login']) == false){
             <h2 class="card-title">Profile</h2>
         </div>
         <div class="card-body">
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab facilis fugit incidunt labore neque quasi quos, sit! Ab aliquam, aperiam consequatur cumque debitis dignissimos ducimus fugiat, fugit, ipsa laboriosam nam officia quod quos sequi sint sunt ullam. Ad alias aliquam aliquid asperiores, aspernatur assumenda beatae cumque delectus dignissimos dolorem eaque earum error esse est et ex fugiat fugit, harum illo incidunt minima nam numquam officiis optio pariatur quaerat quam ratione reprehenderit sed sequi sunt voluptates voluptatibus voluptatum. Animi atque dicta earum eveniet expedita facere iure magnam maiores minima molestias non perferendis quo repellat repudiandae sapiente unde ut voluptas, voluptate voluptatibus.
-            </p>
+            <form action="profile.php" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <input value="<?php echo $user_data['name'] ?>" name="name" type="text" placeholder="Name" class="form-control">
+                </div>
+                <div class="form-group">
+                    <input value="<?php echo $user_data['email'];?>" name="email" type="text" placeholder="E-mail" class="form-control">
+                </div>
+                <div class="form-group">
+                    <input type="file" name="avatar">
+                </div>
+                <div class="form-group text-center">
+                    <input name="update" value="update" type="submit" class="btn btn-info">
+                </div>
+            </form>
         </div>
     </div>
 </div>
