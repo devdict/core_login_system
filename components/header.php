@@ -38,7 +38,9 @@ if(isset($_SESSION['login'])){
                     </li>
                 <?php }else{ ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="profile.php">Profile</a>
+                        <a class="nav-link" href="profile.php">
+                            <img src="<?php echo $user_data['avatar']; ?>" style="width: 35px; height: 35px !important;" class="img-fluid rounded-circle" alt="AVATAR">
+                        </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="logout.php">Logout</a>

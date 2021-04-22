@@ -11,19 +11,17 @@ if(isset($_POST['update']) && $_POST['update'] == 'update'){
     $name = $_POST['name'];
     $email = $_POST['email'];
 
-//    $avatar_name = $_FILES['avatar']['name'];
-//    $avatar_size = $_FILES['avatar']['size'];
-//    $avatar_tmp = $_FILES['avatar']['tmp_name'];
-
     $avatar = $_FILES['avatar'];
 
-    $avatar_name = $avatar['name'];
+    $ext = pathinfo($_FILES['avatar']['name'],PATHINFO_EXTENSION);
+
+    $avatar_name = "storage/".time()."_".$_SESSION['login_user'].".$ext";
     $avatar_size = $avatar['size'];
     $avatar_tmp = $avatar['tmp_name'];
 
-    move_uploaded_file($avatar_tmp,"storage/".$avatar_name);
+    move_uploaded_file($avatar_tmp,$avatar_name);
 
-    unlink('storage/'.$user_data['avatar']);
+    unlink($user_data['avatar']);
 
     $user_update_sql = "UPDATE users SET name = '$name', email = '$email', avatar = '$avatar_name' WHERE id = '$user_id'";
 
